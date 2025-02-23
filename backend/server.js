@@ -1,8 +1,8 @@
 import express from "express";
-import authRoutes from "./routes/auth.routes.js";
-import userRoutes from "./routes/user.routers.js";
+import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.router.js";
 import connectMongoDB from "./db/connectMongoDB.js";
-import postRoutes from "./routes/post.routes.js";
+import postRoutes from "./routes/post.route.js";
 
 
 import dotenv from "dotenv";
