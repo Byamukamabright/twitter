@@ -3,7 +3,7 @@ import  jwt  from "jsonwebtoken";
 export const protectRoute = async (req,res,next) => {
     try{
         const token = req.cookies.jwt
-        console.log(req.cookies)
+        //console.log(req.cookies)
         if(!token){
           return res.status(401).json({erro: "Unauthorized: No Token Provided"}) 
         }
@@ -24,3 +24,5 @@ export const protectRoute = async (req,res,next) => {
       return res.status(500).json({error:"Internal Server Error"})
     }
 } 
+
+export default protectRoute;
