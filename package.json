@@ -12,7 +12,7 @@
   },
   "keywords": [],
   "author": "",
-  "type":"module",
+  "type": "module",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Byamukamabright/twitter/issues"
@@ -20,6 +20,8 @@
   "homepage": "https://github.com/Byamukamabright/twitter#readme",
   "description": "",
   "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
+    "@tanstack/react-query": "^4.36.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
@@ -27,7 +29,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.10.1"
+    "mongoose": "^8.10.1",
+    "react-hot-toast": "^2.5.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
