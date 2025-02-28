@@ -57,7 +57,7 @@ const handleInputChange = (e) =>{
         <form className='flex gap-4 flecx-col' onSubmit={handleSubmit}>
             <XSvg className='w-24 lg:hidden fill-white'/>
             <h1 className='text-4xl font-extrabold text-white'>let's go</h1>
-            <label className='input input-bordered rounded flex items-center gap 2'>
+            <label className='input input-bordered rounded flex items-center gap-2'>
               <MdMail />
               <input type='text'
               className='grow'
@@ -67,7 +67,7 @@ const handleInputChange = (e) =>{
               value={formData.username}
               />
             </label>
-            <label className='input input-bordered rounded flex items-center gap 2'>
+            <label className='input input-bordered rounded flex items-center gap-2'>
               <MdPassword />
               <input 
               type='password'
