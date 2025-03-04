@@ -5,28 +5,34 @@ import LoadingSpinner from '../../components/common/LoadingSpinner'
 import toast from 'react-hot-toast'
 import { FaUser } from 'react-icons/fa'
 import { FaHeart } from 'react-icons/fa6'
+import { IoSettingsOutline } from "react-icons/io5";
 
 const NotificationPage = () => {
-    const {data: notifications, isLoading } = useQuery({
-        queryKey:  ["notifications"],
-        queryFn: async () => {
-            try{
-                const res = await fetch("/api/notifications");
-                const data = res.json()
-                if(!res.ok) throw new Error(data.error || "SomeThing went wrong");
-                return data;
-            }catch(error){
-                throw new Error(error.message)
-            }
-        },
-        onSuccess: () => {
+    // const {data: notifications, isLoading } = useQuery({
+    //     queryKey:  ["notifications"],
+    //     queryFn: async () => {
+    //         try{
+    //             const res = await fetch("/api/notifications");
+    //             const data = res.json()
+    //             if(!res.ok) throw new Error(data.error || "SomeThing went wrong");
+    //             return data;
+    //         }catch(error){
+    //             throw new Error(error.message)
+    //         }
+    //     },
+    //     onSuccess: () => {
 
-        },
-        onError:(error) =>{
-            toast.error(error.message)
+    //     },
+    //     onError:(error) =>{
+    //         toast.error(error.message)
 
-        }
-    });
+    //     }
+    // });
+    const deleteNotifications = () =>{
+        alert("Delleted successfully")
+    }
+    const isLoading = false;
+    const notifications = []
   return (
     <div className='flex-[4_4_0] border-l border-gray-700 min-h-screen'>
         <div className='flex justify-between items-center p-4 border-b border-gray-700'>
