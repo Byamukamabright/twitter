@@ -40,6 +40,8 @@ const ProfilePage = () => {
   const isMyProfile = true
   const authUser = user.username
   const username = user.username
+  const isPending = false
+  const amIFollowing = []
 
 	// const { username } = useParams();
 
