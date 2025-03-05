@@ -12,9 +12,9 @@ import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
 
 const Post = ({ post }) => {
-	const authUser = "johndoe";
+	// const authUser = "johndoe";
 	const [comment, setComment] = useState("");
-	// const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+	 const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 	const queryClient = useQueryClient();
 	const postOwner = post.user;
 	const isLiked = post.likes.includes(authUser._id);
