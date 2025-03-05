@@ -5,10 +5,40 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { POSTS } from "../../utils/db/dummy";
 
-const Posts = () => {
-  const isLoading = false;
-  const isRefetching = false;
-  let posts = POSTS;
+const Posts = ({feedType}) => {
+//   const isLoading = false;
+//   const isRefetching = false;
+//   let posts = POSTS;
+
+  const getPostEndpoint = ()=>{
+	switch(feedType){
+		case "forYou":
+			return "/api/posts/all"
+		case "following":
+			return "/api/posts/following"
+		case "likes":
+			return
+		default:
+			return "/api/posts/all"
+	}
+  };
+  const POST_ENDPOINT = getPostEndpoint()
+  const  {data:posts ,isLoading,isRefetching,refetch}  = useQuery({
+	queryKey: ["posts"],
+	queryFn: async()=> {
+		try{
+			const res = await fetch(POST_ENDPOINT);
+			const data = res.json()
+			if(!res.ok) throw new Error(data.error || "Something went wrong")
+			return data;
+		}catch(error){
+			throw new Error(error.message)
+		}
+	}
+  })
+  useEffect(()=>{
+	refetch();
+  },[feedType, refetch])
 	return (
 		<>
 			{(isLoading || isRefetching) && (
