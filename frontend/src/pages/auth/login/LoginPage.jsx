@@ -1,48 +1,47 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation , useQueryClient} from '@tanstack/react-query'
 import XSvg from '../../../components/svgs/X'
 import { MdMail, MdPassword } from 'react-icons/md'
+import toast from 'react-hot-toast'
 
 
 const LoginPage = () => {
-  const queryClient = useQuery({});
+  const queryClient = useQueryClient()
   const [formData,setFormData] = useState({
     username:"",
     password:""
   });
-  const {
-          mutate:loginMutation,
-          isPending,
-          isError,
-          error
-        } = useMutation({
-          mutationFn: async ({username,password}) => {
-            try{
-              const res = await fetch("/api/auth/login",{
-                method:"POST",
-                headers: {
-                  "content-Type":"application/json",
-                },
-                body: JSON.stringify({username,password})
-              });
-              const data = await res.json();
-              if(!res.ok){
-                throw new error(data.error || "something went wrong")
-              }
-              
-            } catch(error){
-              throw new Error(error);
-            }
-          },
-          onSuccess: () => {
 
-          }
-        });
+  const {mutate,isError,error,isPending} = useMutation({
+    mutationFn: async({username,password}) => {
+      try{
+        const res = await fetch("/api/auth/login",{
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body: JSON.stringify({username,password})
+        })
+        // if(!res.ok) throw new Error(res.error || "Something Went Wrong")
+        const data = await res.json()
+        if(data.error) throw new Error(data.error)
+
+      }catch(error){
+        toast.error(error.message)
+      }
+    },
+    onSuccess:()=>{
+      toast.success("Login Successfull")
+      queryClient.invalidateQueries({queryKey:["authUser"]})
+    }
+  })
+ 
+        
 const handleSubmit = (e) =>{
     e.preventDefault()
-      console.log(formData)
+      mutate(formData)
  }
 const handleInputChange = (e) =>{
   setFormData({...formData,[e.target.name]:e.target.value})
@@ -54,7 +53,7 @@ const handleInputChange = (e) =>{
         <XSvg className='lg:w-2/3  fill-white' />
       </div>
       <div className='flex-1 flex flex-col justify-center items-center'>
-        <form className='flex gap-4 flecx-col' onSubmit={handleSubmit}>
+        <form className='flex gap-4 flex-col' onSubmit={handleSubmit}>
             <XSvg className='w-24 lg:hidden fill-white'/>
             <h1 className='text-4xl font-extrabold text-white'>let's go</h1>
             <label className='input input-bordered rounded flex items-center gap-2'>
@@ -91,6 +90,7 @@ const handleInputChange = (e) =>{
       </div>
       
     </div>
+
   )
 }
 

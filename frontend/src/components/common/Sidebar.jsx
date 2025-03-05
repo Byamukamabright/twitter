@@ -9,35 +9,32 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const Sidebar = () => {
-    const authUser = {
-        fullName: "John Doe",
-        username: "johndoe",
-        profileImg:"../../../public/avatars/boy1.png"
-    }
-	// const queryClient = useQueryClient();
-	// const { mutate: logout } = useMutation({
-	// 	mutationFn: async () => {
-	// 		try {
-	// 			const res = await fetch("/api/auth/logout", {
-	// 				method: "POST",
-	// 			});
-	// 			const data = await res.json();
+	const queryClient = useQueryClient()
+  
+    
+	 const {mutate:logOut,isPending,isError,error}= useMutation({
+		mutationFn: async()=>{
+			try{
+				const res = await fetch("/api/auth/logout",{
+					method:"POST",
+				})
+				const data = await res.json()
+				if(!res.ok) throw new Error(data.error || "SomeThing Went wrong")
 
-	// 			if (!res.ok) {
-	// 				throw new Error(data.error || "Something went wrong");
-	// 			}
-	// 		} catch (error) {
-	// 			throw new Error(error);
-	// 		}
-	// 	},
-	// 	onSuccess: () => {
-	// 		queryClient.invalidateQueries({ queryKey: ["authUser"] });
-	// 	},
-	// 	onError: () => {
-	// 		toast.error("Logout failed");
-	// 	},
-	// });
-	// const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+			}catch(error){
+				throw new Error(error.message)
+			}
+			
+		},
+		onSuccess: ()=>{
+			toast.success("Logout Successfully")
+			queryClient.invalidateQueries({queryKey: ["authUser"]});
+			location.reload()
+			
+
+		}
+	 })
+	 const {data:authUser } = useQuery({queryKey:["authUser"]})
 
 	return (
 		<div className='md:flex-[2_2_0] w-18 max-w-52'>
@@ -94,7 +91,7 @@ const Sidebar = () => {
 								className='w-5 h-5 cursor-pointer'
 								onClick={(e) => {
 									e.preventDefault();
-									logout();
+									logOut();
 								}}
 							/>
 						</div>
