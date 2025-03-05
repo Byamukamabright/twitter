@@ -1,9 +1,9 @@
 import React from 'react'
-import { useQuery,useMutation } from '@tanstack/react-query'
+import { useQuery,useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 const UseFollow = () => {
-    const queryClient = useQuery({})
+    const queryClient = useQueryClient()
     const {mutate: follow, isPending} = useMutation({
         mutationFn: async (userId) =>{
             try{
@@ -19,6 +19,7 @@ const UseFollow = () => {
         },
         onSuccess: () =>{
             Promise.all([])
+            toast.success("Follow successful")
         },
         onError: (error) =>{
             toast.error(error.message);

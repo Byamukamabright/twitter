@@ -27,51 +27,52 @@ const ProfilePage = () => {
   const isUpdatingProfile = false
 
 
-  const user = {
-    username: "johndoe",
-			profileImg: "../../public/avatars/boy1.png",
-			fullName: "John Doe",
-      following:["1","2","3"],
-      followers:[],
-      bio:"God is Great"
-  }
-  const isLoading =false;
-  const isRefetching = false;
-  const isMyProfile = true
-  const authUser = user.username
-  const username = user.username
-  const isPending = false
-  const amIFollowing = []
+//   const user = {
+//     username: "johndoe",
+// 			profileImg: "../../public/avatars/boy1.png",
+// 			fullName: "John Doe",
+//       following:["1","2","3"],
+//       followers:[],
+//       bio:"God is Great"
+//   }
+  //const isLoading =false;
+  //const isRefetching = false;
+//   const isMyProfile = true
+ // const authUser = user.username
+ // const username = user.username
+ // const isPending = false
+  //const amIFollowing = []
 
-	// const { username } = useParams();
+	const { username } = useParams();
+	
 
-	// const { follow, isPending } = useFollow();
-	// const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+	const { follow, isPending } = useFollow();
+	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
-	// const {
-	// 	data: user,
-	// 	isLoading,
-	// 	refetch,
-	// 	isRefetching,
-	// } = useQuery({
-	// 	queryKey: ["userProfile"],
-	// 	queryFn: async () => {
-	// 		try {
-	// 			const res = await fetch(`/api/users/profile/${username}`);
-	// 			const data = await res.json();
-	// 			if (!res.ok) {
-	// 				throw new Error(data.error || "Something went wrong");
-	// 			}
-	// 			return data;
-	// 		} catch (error) {
-	// 			throw new Error(error);
-	// 		}
-	// 	},
-	// });
+	const {
+		data: user,
+		isLoading,
+		refetch,
+		isRefetching,
+	} = useQuery({
+		queryKey: ["userProfile"],
+		queryFn: async () => {
+			try {
+				const res = await fetch(`/api/users/profile/${username}`,{method:"GET"});
+				const data = await res.json();
+				if (!res.ok) {
+					throw new Error(data.error || "Something went wrong");
+				}
+				return data;
+			} catch (error) {
+				throw new Error(error);
+			}
+		},
+	});
 
 	// const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
 
-	//const isMyProfile = authUser._id === user?._id;
+	const isMyProfile = authUser._id === user?._id;
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
 	//const amIFollowing = authUser?.following.includes(user?._id);
 
@@ -87,9 +88,9 @@ const ProfilePage = () => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	refetch();
-	// }, [username, refetch]);
+	useEffect(() => {
+		refetch();
+	}, [username, refetch]);
  
   
 

@@ -8,25 +8,24 @@ import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RightPanel = () => {
-	// const { data: suggestedUsers, isLoading } = useQuery({
-	// 	queryKey: ["suggestedUsers"],
-	// 	queryFn: async () => {
-	// 		try {
-	// 			const res = await fetch("/api/users/suggested");
-	// 			const data = await res.json();
-	// 			if (!res.ok) {
-	// 				throw new Error(data.error || "Something went wrong!");
-	// 			}
-	// 			return data;
-	// 		} catch (error) {
-	// 			throw new Error(error.message);
-	// 		}
-	// 	},
-	// });
+	const { data: suggestedUsers, isLoading } = useQuery({
+		queryKey: ["suggestedUsers"],
+		queryFn: async () => {
+			try {
+				const res = await fetch("/api/users/suggested");
+				const data = await res.json();
+				if (!res.ok) {
+					throw new Error(data.error || "Something went wrong!");
+				}
+				return data;
+			} catch (error) {
+				throw new Error(error.message);
+			}
+		},
+	});
 
-	// const { follow, isPending } = useFollow();
-  const isLoading = false;
-  let suggestedUsers = USERS_FOR_RIGHT_PANEL
+	const { follow, isPending } = useFollow();
+
 
 	if (suggestedUsers?.length === 0) return <div className='md:w-64 w-0'></div>;
 
