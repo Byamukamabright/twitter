@@ -7,19 +7,44 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 const CreatePost = () => {
-    const isPending = false;
-    const isError = false;
-    let authUser = {
-        profileImg : "../../public/avatars/boy1.png"
-    }
+	const { data: authUser } = useQuery({queryKey:["authUser"]})
+	console.log(authUser)
+	const queryClient = useQueryClient()
+    //const isPending = false;
+    //const isError = false;
+    
+    
 	const [text, setText] = useState("");
 	const [img, setImg] = useState(null);
 	const imgRef = useRef(null);
 
+	const {mutate: createpost,isError,error,isPending} = useMutation({
+	mutationFn: async({img,text}) =>{
+		try{
+			const res = await fetch("/api/posts/create",{
+				method:"POST",
+				headers: {
+					"Content-Type":"application/json"
+				},
+				body: JSON.stringify({img,text})
+			})
+			const data = await res.json();
+			if(!res.ok) throw new Error(data.error || "Something went wrong");
+		}catch(error){
+			throw new Error(error.message)
+		}
+	},
+	onSuccess:() => {
+		toast.success("Post created Succefully")
+		queryClient.invalidateQueries({queryKey:["posts"]})
+	}
+	})
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// createPost({ text, img });
-        alert("Post created Successfully")
+		createpost({ text, img });
+		setText("")
+		setImg(null)
 	};
 
 	const handleImgChange = (e) => {
@@ -37,7 +62,7 @@ const CreatePost = () => {
 		<div className='flex p-4 items-start gap-4 border-b border-gray-700'>
 			<div className='avatar'>
 				<div className='w-8 rounded-full'>
-					<img src={authUser?.profileImg || "/avatars/boy1.png"} />
+					<img src={authUser?.profileImg || "/avatar-placeholder.png"} />
 				</div>
 			</div>
 			<form className='flex flex-col gap-2 w-full' onSubmit={handleSubmit}>
