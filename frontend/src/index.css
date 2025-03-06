@@ -1,8 +1,8 @@
 @import "tailwindcss";
-/* @plugin "daisyui";
+@plugin "daisyui";
 @plugin "daisyui/theme"{
   name: "black";
   default: true
   --color-primary: "rbg(29,155,240)";
   --color-secondary: "rbg(24,24,24)";
-} */
+}
