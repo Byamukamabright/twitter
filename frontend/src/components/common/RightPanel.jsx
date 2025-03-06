@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { USERS_FOR_RIGHT_PANEL } from "../../utils/db/dummy";
+import {fileURLToPath, dirname} from "url"
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import useFollow from "../../hooks/useFollow";
+import useFollow from `${__dirname}../../hooks/useFollow`;
 
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
