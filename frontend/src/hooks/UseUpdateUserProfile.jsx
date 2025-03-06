@@ -1,9 +1,10 @@
 import React from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 const UseUpdateUserProfile = () => {
-const queryClient = useQuery({})
+const queryClient = useQueryClient()
+
 const { mutateAsync:updateProfile,isPending:isUpdatingProfile } = useMutation({
   mutationFn: async (formData) => {
     try{
@@ -25,7 +26,10 @@ const { mutateAsync:updateProfile,isPending:isUpdatingProfile } = useMutation({
   },
   onSuccess: ()=>{
     toast.success("Profile updated successfully");
-    Promise.all([])
+    Promise.all([
+      queryClient.invalidateQueries({queryKey:["authUser"]}),
+      queryClient.invalidateQueries({queryKey:["userProfile"]})
+    ])
   },
   onError: () =>{
     toast.error(error.message)
