@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {fileURLToPath, dirname} from "url";
 
 import UseFollow  from "../../hooks/UseFollow";
 
