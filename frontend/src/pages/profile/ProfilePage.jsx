@@ -14,7 +14,7 @@ import { MdEdit } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import { formatMemberSinceDate } from "../../utils/date";
 
-import useFollow from "../../hooks/useFollow";
+import UseFollow from "../../hooks/UseFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const ProfilePage = () => {
@@ -28,7 +28,7 @@ const ProfilePage = () => {
 	const { username } = useParams();
 	
 
-	const { follow, isPending } = useFollow();
+	const { follow, isPending } = UseFollow();
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
 	const {
