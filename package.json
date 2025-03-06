@@ -23,6 +23,7 @@
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
     "@tanstack/react-query": "^4.36.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
