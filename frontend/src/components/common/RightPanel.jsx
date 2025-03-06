@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {fileURLToPath, dirname} from "url";
 
-import UseFollow  from "../UseFollow../hooks/useFollow";
+import UseFollow  from "../../hooks/UseFollow";
 
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
