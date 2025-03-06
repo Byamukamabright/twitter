@@ -10,7 +10,7 @@ export const getUserProfile = async (req,res) =>{
         if(!user){
           return  res.status(404).json({message: "User Not Found"});
         }
-        res.status(200).json(user).select("-password");
+        res.status(200).json(user);
     }catch(error){
         res.status(500).json({error: error.message})
         console.log("Error in the getUserProfile", error.message)

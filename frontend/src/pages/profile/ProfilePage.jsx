@@ -24,7 +24,7 @@ const ProfilePage = () => {
 
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
-  const isUpdatingProfile = false
+//   const isUpdatingProfile = false
 
 
 //   const user = {
@@ -70,11 +70,11 @@ const ProfilePage = () => {
 		},
 	});
 
-	// const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
+	const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
 
 	const isMyProfile = authUser._id === user?._id;
 	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
-	//const amIFollowing = authUser?.following.includes(user?._id);
+	const amIFollowing = authUser?.following.includes(user?._id);
 
 	const handleImgChange = (e, state) => {
 		const file = e.target.files[0];
