@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon backend/server.js",
     "start": "node backend/server.js",
-    "build": "npm install && npm install --prefix frontend --legacy-peer-deps  && npm run build --prefix frontend --legacy-peer-deps "
+    "build": "npm install && npm install --prefix frontend  && npm run build --prefix frontend && npm install @vitejs/plugin-react --prefix frontend"
   },
   "repository": {
     "type": "git",
