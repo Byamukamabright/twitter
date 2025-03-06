@@ -1,4 +1,4 @@
-export const formatPostDate = (createAt) => {
+export const formatPostDate = (createdAt) => {
     const currentDate = new Date();
     const createdAtDate = new Date(createdAt);
 
@@ -14,7 +14,7 @@ export const formatPostDate = (createAt) => {
     } else if (timeDifferenceInHours >=1 ){
         return `${timeDifferenceInHours}h`
     } else if(timeDifferenceInMinunes >= 1){
-        return `${timeDiffernceMinunes}m`
+        return `${ timeDifferenceInMinunes}m`
     } else {
         return "Just now "
     }
