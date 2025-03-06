@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import {fileURLToPath, dirname} from "url"
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-import useFollow from `${__dirname}../../hooks/useFollow`;
+import useFollow from  __dirname + "../../hooks/useFollow";
 
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
