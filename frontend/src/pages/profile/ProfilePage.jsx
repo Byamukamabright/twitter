@@ -24,24 +24,6 @@ const ProfilePage = () => {
 
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
-//   const isUpdatingProfile = false
-
-
-//   const user = {
-//     username: "johndoe",
-// 			profileImg: "../../public/avatars/boy1.png",
-// 			fullName: "John Doe",
-//       following:["1","2","3"],
-//       followers:[],
-//       bio:"God is Great"
-//   }
-  //const isLoading =false;
-  //const isRefetching = false;
-//   const isMyProfile = true
- // const authUser = user.username
- // const username = user.username
- // const isPending = false
-  //const amIFollowing = []
 
 	const { username } = useParams();
 	
