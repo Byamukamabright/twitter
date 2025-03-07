@@ -64,6 +64,7 @@ export const login = async (req,res) => {
         if(!user || !isPasswordCorrect){
             return res.status(400).json({error:"Invalid Credentials"});
         }
+        
         generateTokenAndSetCookie(user._id,res);
         res.status(200).json({
             _id:user._id,
@@ -106,6 +107,7 @@ export const getMe = async (req,res) => {
 
 export const password = async(req,res) =>{
     try{
+        
         const emailRegex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const { username,email,newpassword } = req.body
         const user = await User.findOne({username})
@@ -113,16 +115,23 @@ export const password = async(req,res) =>{
         const salt = await bcrypt.genSalt(10)
         const passwordHash = await bcrypt.hash(newpassword,salt) 
 
-        if(!emailRegex.test(email)){return res.status(400).json("Invalid Email format")}
-        if(!user) {return res.status(404).json("User doesnot exist")};
+        if(!emailRegex.test(email)){return res.status(400).json({error:"Invalid Email format"})}
+        if(!user) {return res.status(404).json({error:"User doesnot exist"})};
+
+        if(!(newpassword.length >= 6)){
+            return res.status(400).json({error:"password must be 6 characters"})
+        }
+
 
         if(username === user.username && email === user.email){
             user.password = await bcrypt.hash(newpassword,salt)
-            res.status(200).json("password updated successful")
+            res.status(200).json({message:"password updated successful, Login"})
             await user.save()
+        }else{
+            res.status(404).json({error:"Enter correct Details"})
         }
     }catch(error){
-        res.status(500).json("Internal server Error")
+        res.status(500).json({error:"Internal server Error"})
         console.log("Error in the auth reset password controller")
     }
 }

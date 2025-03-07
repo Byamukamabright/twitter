@@ -8,7 +8,6 @@ import { toast } from "react-hot-toast";
 
 const CreatePost = () => {
 	const { data: authUser } = useQuery({queryKey:["authUser"]})
-	console.log(authUser)
 	const queryClient = useQueryClient()
     //const isPending = false;
     //const isError = false;

@@ -26,14 +26,18 @@ const LoginPage = () => {
         })
         // if(!res.ok) throw new Error(res.error || "Something Went Wrong")
         const data = await res.json()
+        if(data.error == "Invalid Credentials"){
+          toast.error("Invalid Credentials")
+          
+        }
         if(data.error) throw new Error(data.error)
 
       }catch(error){
-        toast.error(error.message)
+       throw new Error(error)
       }
     },
     onSuccess:()=>{
-      toast.success("Login Successfull")
+      toast.success("Login Successful")
       queryClient.invalidateQueries({queryKey:["authUser"]})
     }
   })
@@ -79,13 +83,13 @@ const handleInputChange = (e) =>{
             <button className='btn rounded-full btn-primary text-white'>
               {isPending?"Loading...":"Login"}
             </button>
-            {isError && <p className='text-red-500'>Something Went Wrong</p>}
         </form>
         <div className='flex flex-col gap-2 mt-4'>
           <p className='text-white text-lg'>Dont have an account?</p>
           <Link to='/signup'>
           <button className='btn rounded-full btn-primary text-white btn-outline w-full'>SignUp</button>
           </Link>
+          <Link to="/reset" className='text-center'>forgot password</Link>
         </div>
       </div>
       
