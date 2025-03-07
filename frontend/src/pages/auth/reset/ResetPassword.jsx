@@ -12,7 +12,7 @@ const ResetPassword = () => {
             newpassword:""
         }
     ) 
-    const { mutate: resetPassword, isSuccess,isError,error} = useMutation({
+    const { mutate: resetPassword, isSuccess,isError,error,isPending} = useMutation({
         mutationFn: async(formData) =>{
             try{
                 if((formData.email.replace(" ","").length != 0)&& (formData.username.length != 0)&& (formData.newpassword.length !=0 )){
@@ -70,7 +70,7 @@ const ResetPassword = () => {
                        
                      </input>
                 </label>
-                <button className='btn btn-primary rounded-full'>Reset Password</button>
+                <button className='btn btn-primary rounded-full'>{isPending? "Reseting...": "Reset Password"}</button>
              </form>
              
         </div>        
