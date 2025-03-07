@@ -103,3 +103,26 @@ export const getMe = async (req,res) => {
 
     }
 }
+
+export const password = async(req,res) =>{
+    try{
+        const emailRegex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const { username,email,newpassword } = req.body
+        const user = await User.findOne({username})
+
+        const salt = await bcrypt.genSalt(10)
+        const passwordHash = await bcrypt.hash(newpassword,salt) 
+
+        if(!emailRegex.test(email)){return res.status(400).json("Invalid Email format")}
+        if(!user) {return res.status(404).json("User doesnot exist")};
+
+        if(username === user.username && email === user.email){
+            user.password = await bcrypt.hash(newpassword,salt)
+            res.status(200).json("password updated successful")
+            await user.save()
+        }
+    }catch(error){
+        res.status(500).json("Internal server Error")
+        console.log("Error in the auth reset password controller")
+    }
+}

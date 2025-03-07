@@ -90,7 +90,7 @@ export const updateUser = async (req,res) => {
             };
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(newPassword,salt)
-            console.log("password Updated")
+           
         }
         if(profileImg){
             if(user.profileImg){
