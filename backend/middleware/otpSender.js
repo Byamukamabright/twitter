@@ -77,7 +77,7 @@ export const otpSender = async (req,res,next) => {
                   port: 465,
                   auth: {
                     user: 'brightforexhub@gmail.com',
-                    pass: 'ugfnavlcjdzvljph',
+                    pass: process.env.EMAIL_PASS,
                   },
                 });
               
