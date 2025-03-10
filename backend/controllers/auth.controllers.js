@@ -1,42 +1,30 @@
 import User from "../models/user.model.js";
+import newOtp from "../models/otp.model.js"
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../lib/utils/generateToken.js"
 
 export const signup = async (req,res) => {
     try {
-        const { fullName,username,email,password } = req.body
-
-        const emailRegex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)){
-            return res.status(400).json({error: "Invalid email format"});
-        }
-
-        const existingUser = await User.findOne({username})
-        if (existingUser){
-            return res.status(400).json({error: "Username is already taken"});
-        }
-        const existingEmail = await User.findOne({email})
-        if (existingEmail){
-            return res.status(400).json({error: "Email is already taken"});
-        }
-        if (password.length < 6){
-            return res.status(400).json({error: "Password must consists of 6 characters"})
-        }
-
-        //hash password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password,salt);
+        const { fullName,username,email,password,verified } = req.body
+        const data = req.body;
+        
         const newUser = new User({
             fullName,
             username,
             email,
-            password: hashedPassword
+            password
         });
-        if(newUser){
+        if(!verified){
+            data.password = null
+            data.otp = ""
+            res.status(200).json({data})
+        } 
+
+        if(verified){
             generateTokenAndSetCookie(newUser._id,res)
             await newUser.save();
 
-            res.status(201).json({
+            res.status(200).json({
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 username:newUser,username,
@@ -46,10 +34,11 @@ export const signup = async (req,res) => {
                 profileImg: newUser.profileImg,
                 coverImg: newUser.coverImg,
                 bio: newUser.bio
-            })
-        } else {
-            res.status(400).json({err:"Invalid user data"})
+        })   
+        await newOtp.deleteOne({email})
         }
+          
+        
     } catch (error){
         console.log("Error in signup controller",error.message)
         res.status(500).json({error: "Internal Server Error"})
@@ -133,5 +122,15 @@ export const password = async(req,res) =>{
     }catch(error){
         res.status(500).json({error:"Internal server Error"})
         console.log("Error in the auth reset password controller")
+    }
+}
+
+export const verifyOtp = async(req,res)=>{
+    try{
+        const otp = req.body
+        return({otp});
+    }catch(error){
+        console.log("Error in The verifyOtp controller")
+        res.status(500).json({error:"Internal server Error"})
     }
 }

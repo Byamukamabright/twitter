@@ -7,6 +7,7 @@ import XSvg from '../../../components/svgs/X';
 import { MdDriveFileRenameOutline, MdEmail,MdPassword } from "react-icons/md";
 import { FaUser }  from 'react-icons/fa'
 import { Link } from "react-router-dom"
+import { use } from 'react';
 
 const SignUpPage = () => {
 	const [formData, setFormData] = useState({
@@ -15,6 +16,10 @@ const SignUpPage = () => {
 		fullName: "",
 		password:""
 	});
+    let [verifyDetails, setVerifyDetails] = useState(true)
+    let [myDetails, setMyDetails] = useState('');
+    const [otp, setOtp] = useState("")
+    
 	const {mutate,isError,isPending,error} = useMutation({
 		mutationFn: async ({email,username,fullName,password}) => {
 			try{
@@ -25,9 +30,13 @@ const SignUpPage = () => {
                     },
                     body: JSON.stringify({ email,username,fullName,password })
                 })
-                if(!res.ok) throw new Error("SomeThing went wrong");
                 const data = await res.json();
-            
+                if(!res.ok) throw new Error(data.error || "SomeThing went wrong");
+                
+                console.log(data)
+                setMyDetails(data.data);
+                setVerifyDetails(false)
+                
                 if(data.error) throw new Error(data.error);
                 
                 return data;
@@ -36,9 +45,36 @@ const SignUpPage = () => {
             }
 		},
         onSuccess: () => {
-            toast.success("Account created successfully")
+            toast.success("OTP sent successfully")
         }
 	})
+    const {mutate:verifyaccount, isPending:verifypending,error:verifyerror}= useMutation({
+        mutationFn: async(myDetails) => {
+            try{
+                const res = await fetch("/api/auth/signup",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(myDetails)
+                })
+                const data = await res.json()
+                if(!res.ok){
+                    throw new Error(data.error || "Something went wrong")
+                
+                }
+                if(data.followers){
+                    toast.success("Account Verified")
+                    location.reload()
+                }
+            }catch(error){
+
+            }  
+        },
+        onSuccess:()=>{
+            
+        }
+    })
 
 	const handleSubmit = (e) =>{
 		e.preventDefault(); //page wont reload
@@ -49,11 +85,23 @@ const SignUpPage = () => {
 	const handleInputChange = (e) => {
 		setFormData({...formData,[e.target.name]:e.target.value})
 	};
-
+    const handleOtpchange = (e) => {
+        setOtp(e.target.value);
+    };
+    const verifyAccount = (e)=>{
+        e.preventDefault()
+        myDetails.otp = otp
+        verifyaccount(myDetails);
+        
+        
+        
+    }
 
   return (
 	 <div className='max-w-screen-xl mx-auto flex h-screen px-10'>
-		<div className='flex-1 hidden lg:flex items-center justify-center'>
+        { verifyDetails &&
+        <>
+        <div className='flex-1 hidden lg:flex items-center justify-center'>
 			<XSvg className="lg:w-2/3 fill-white" /> 
 		</div>
 		<div className='flex-1 flex flex-col justify-center items-center'>
@@ -120,7 +168,25 @@ const SignUpPage = () => {
                 </button>
             </Link>
             </div>
+            
 		</div>
+
+        </>}
+        {!verifyDetails &&<>
+        <div className='flex flex-col justify-center items-center mx-auto h-screen max-w-screen-xl'>
+            <form className='flex flex-col' onSubmit={verifyAccount}>
+                <h3 >Enter OTP sent to your Email</h3>
+                <label className='input rounded-md p-2 my-1'>
+                    <input type='text' name='otp' className='grow' placeholder='Enter 4-Digit OTP' inputMode='numeric' onChange={handleOtpchange}/>
+                </label>
+                {myDetails.otp? <p className='text-red-500 font-bold'>Invalid OTP </p>: ""}
+            <button className='btn btn-primary rounded-full'>Verify</button>
+            </form>
+        </div>
+        </>}
+
+		
+        
 	  
 	</div>
   )
