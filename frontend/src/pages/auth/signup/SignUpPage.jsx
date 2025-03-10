@@ -19,6 +19,7 @@ const SignUpPage = () => {
     let [verifyDetails, setVerifyDetails] = useState(true)
     let [myDetails, setMyDetails] = useState('');
     const [otp, setOtp] = useState("")
+    let isverified = true
     
 	const {mutate,isError,isPending,error} = useMutation({
 		mutationFn: async ({email,username,fullName,password}) => {
@@ -33,9 +34,11 @@ const SignUpPage = () => {
                 const data = await res.json();
                 if(!res.ok) throw new Error(data.error || "SomeThing went wrong");
                 
-                console.log(data)
+                
                 setMyDetails(data.data);
                 setVerifyDetails(false)
+                setVerifyDetails(myDetails.verified)
+                
                 
                 if(data.error) throw new Error(data.error);
                 
@@ -59,6 +62,7 @@ const SignUpPage = () => {
                     body: JSON.stringify(myDetails)
                 })
                 const data = await res.json()
+                
                 if(!res.ok){
                     throw new Error(data.error || "Something went wrong")
                 
@@ -92,9 +96,7 @@ const SignUpPage = () => {
         e.preventDefault()
         myDetails.otp = otp
         verifyaccount(myDetails);
-        
-        
-        
+        isverified = myDetails.verified
     }
 
   return (
@@ -179,8 +181,8 @@ const SignUpPage = () => {
                 <label className='input rounded-md p-2 my-1'>
                     <input type='text' name='otp' className='grow' placeholder='Enter 4-Digit OTP' inputMode='numeric' onChange={handleOtpchange}/>
                 </label>
-                {myDetails.otp? <p className='text-red-500 font-bold'>Invalid OTP </p>: ""}
-            <button className='btn btn-primary rounded-full'>Verify</button>
+                { !isverified?<p className='text-red-500'>Invalid OTP </p>:""}
+            <button id='verify'className='btn btn-primary rounded-full hover:bg-blue-900'>Verify</button>
             </form>
         </div>
         </>}

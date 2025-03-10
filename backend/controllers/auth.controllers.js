@@ -17,6 +17,7 @@ export const signup = async (req,res) => {
         if(!verified){
             data.password = null
             data.otp = ""
+            data.verified = false
             res.status(200).json({data})
         } 
 
