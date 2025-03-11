@@ -23,7 +23,8 @@ const PORT = process.env.PORT || 5000 ;
 const __dirname = path.resolve()
 app.use(express.json({limit:"5mb"})); // to parse 
 app.use(express.urlencoded({extended:true}));
-app.use(cookieParser())
+app.use(cookieParser());
+app.set('view engine', 'ejs');
 
 app.use("/api/auth",authRoutes);
 app.use("/api/users",userRoutes);

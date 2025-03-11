@@ -7,16 +7,15 @@ import { MdOutlinePassword } from "react-icons/md";
 const ResetPassword = () => {
     const [formData, setFormData] = useState(
         {
-            username:"",
             email:"",
-            newpassword:""
+            
         }
     ) 
     const { mutate: resetPassword, isSuccess,isError,error,isPending} = useMutation({
         mutationFn: async(formData) =>{
             try{
-                if((formData.email.replace(" ","").length != 0)&& (formData.username.length != 0)&& (formData.newpassword.length !=0 )){
-                    const res = await fetch("/api/auth/reset",{
+                if((formData.email.replace(" ","").length != 0)){
+                    const res = await fetch("/api/auth/reset/ui",{
                         method:"POST",
                         headers:{
                             "Content-Type":"application/json"
@@ -56,20 +55,10 @@ const ResetPassword = () => {
             <form onSubmit={handleFormData}>
                 <h2 className='p-1 text-xl'>Enter Details to Reset your password</h2>
                 <label className='flex my-2 input'>
-                    <FaUser className='w-5 h-5 fill-gray-700' />
-                    <input type='text' placeholder='username' name="username" className='grow text-md' onChange={handleInputChange}/>
-                </label>
-                <label className='flex my-2 input'>
                     <MdMarkEmailUnread className='w-5 h-5 fill-gray-700'/>
                     <input type='email' name="email" placeholder='email' className='grow text-md' onChange={handleInputChange}/>
                 </label>
-                <label className='flex my-2 input'>
-                    <MdOutlinePassword className='w-5 h-5 fill-gray-700'/>  
-                    <input
-                     type='password' placeholder='New password'name="newpassword" className='grow text-mds' onChange={handleInputChange}>
-                       
-                     </input>
-                </label>
+            
                 <button className='btn btn-primary rounded-full'>{isPending? "Reseting...": "Reset Password"}</button>
              </form>
              
